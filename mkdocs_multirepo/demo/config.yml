@@ -1,0 +1,11 @@
+repos:
+  - name: repo-1
+    title: My Repository 1
+    image: images/icon-repo-1.png
+    url: https://github.com/giansalex/mkdocs-sample.git
+  - name: repo-2
+    title: My Repository 2
+    image: images/icon-repo-2.png
+    url: https://github.com/hristo-mavrodiev/mkdocs-sample.git
+element_id: multirepo
+target_dir: site
