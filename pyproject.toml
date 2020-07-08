@@ -1,12 +1,12 @@
 [tool.poetry]
 name = "mkdocs-multirepo"
-version = "0.2.0"
+version = "0.2.1"
 description = ""
 authors = ["Lars Wilhelmer"]
 license = "MIT"
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = "^3.7"
 pyyaml = "^5.3"
 beautifulsoup4 = "^4.9"
 
