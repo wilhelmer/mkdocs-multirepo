@@ -1,6 +1,10 @@
 # mkdocs-multirepo
 
+[![PyPI version](https://badge.fury.io/py/mkdocs-multirepo.svg)](https://badge.fury.io/py/mkdocs-multirepo)
+
 A bit like [monorepo](https://github.com/spotify/mkdocs-monorepo-plugin), but keeps MkDocs projects separate.
+
+> **Note: This plugin is in beta.** 
 
 ## Use Case
 
@@ -16,19 +20,30 @@ This has the following advantages:
 - Avoids problems with relative paths in the projects.
 - Keeps search indexes small instead of creating a giant merged index.
 
-## Installation and Usage
+## Installation
 
 1. Install the plugin with `pip install mkdocs-multirepo`.
 2. Create a directory and put two files named `config.yml` and `index.tpl` in it.
 3. Configure the files as described below.
 4. Change to the directory created in step 1.
 5. Run `git init`.
-6. Run `mkdocs-multirepo --init`.
-7. Run `mkdocs-multirepo --build`.
+6. Run `mkdocs-multirepo --init`
+
+## Usage
+
+```
+Usage: mkdocs-multirepo [OPTIONS]
+
+Options:
+  --init      Initialize the repos as Git submodules.  [default: False]
+  --update    Update the repos, i.e., the Git submodules.  [default: False]
+  --build     Build all MkDocs projects and generate the landing page.
+              [default: False]
+```
 
 ## Configuration
 
-### Sample
+### Sample Project
 
 See `mkdocs_multirepo/demo` for a sample project.
 
