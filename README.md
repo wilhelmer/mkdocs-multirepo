@@ -105,8 +105,8 @@ Sample output:
 <body>
     <section id="multirepo">
         <ul>
-            <li><a href="site/repo-1/index.html"><img src="images/icon-repo-1.png"/><h3>My Repository 1</h3></a></li>
-            <li><a href="site/repo-2/index.html"><img src="images/icon-repo-2.png"/><h3>My Repository 2</h3></a></li>
+            <li><a href="site/repo-1/index.html"><img src="images/icon-repo-1.png"/><span>My Repository 1</span></a></li>
+            <li><a href="site/repo-2/index.html"><img src="images/icon-repo-2.png"/><span>My Repository 2</span></a></li>
         </ul>
     </section>
 </body>
