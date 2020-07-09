@@ -86,7 +86,10 @@ Use the `index.tpl` file to configure the landing page. Example:
 
 ```yml
 <html>
-    <head><title>Multirepo Demo Page</title></head>
+    <head>
+        <title>Multirepo Demo Page</title>
+        <link rel="stylesheet" type="text/css" href="styles.css">
+    </head>
     <body>
         <section id="multirepo"></section>
     </body>
@@ -101,14 +104,17 @@ Sample output:
 
 ```html
 <html>
-<head><title>Multirepo Demo Page</title></head>
-<body>
-    <section id="multirepo">
-        <ul>
-            <li><a href="site/repo-1/index.html"><img src="images/icon-repo-1.png"/><span>My Repository 1</span></a></li>
-            <li><a href="site/repo-2/index.html"><img src="images/icon-repo-2.png"/><span>My Repository 2</span></a></li>
-        </ul>
-    </section>
-</body>
+    <head>
+        <title>Multirepo Demo Page</title>
+        <link href="styles.css" rel="stylesheet" type="text/css" />
+    </head>
+    <body>
+        <section id="multirepo">
+            <ul>
+                <li><a href="repo-1/index.html"><img src="images/icon-repo-1.png" /><span>My Repository 1</span></a></li>
+                <li><a href="repo-2/index.html"><img src="images/icon-repo-2.png" /><span>My Repository 2</span></a></li>
+            </ul>
+        </section>
+    </body>
 </html>
 ```
