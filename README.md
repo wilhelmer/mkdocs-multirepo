@@ -4,27 +4,27 @@ A bit like [monorepo](https://github.com/spotify/mkdocs-monorepo-plugin), but ke
 
 ## Use Case
 
-This plugin allows you to combine multiple MkDocs documentation projects.
+This plugin allows you to build multiple MkDocs documentation projects and generate a landing page for them.
 
-Unlike the [monorepo](https://github.com/spotify/mkdocs-monorepo-plugin) plugin, the multirepo plugin doesn't merge projects into one. 
+Unlike [monorepo](https://github.com/spotify/mkdocs-monorepo-plugin), multirepo doesn't merge projects into one. 
 
-Instead, multirepo automatically adds each MkDocs project as a Git Submodule, builds them individually, and generates a landing page based on a template file.
+Instead, multirepo adds the MkDocs projects as Git submodules, builds them individually, and generates a landing page based on a template file.
 
 This has the following advantages:
 
-- Keeps the individual mkdocs.yml settings of each subproject. This means that, e.g., each subproject can have its own color set or theme.
-- Avoids problems with relative paths in the subprojects.
+- Keeps the individual mkdocs.yml settings of each project. This means that, e.g., each project can have its own color set or theme.
+- Avoids problems with relative paths in the projects.
 - Keeps search indexes small instead of creating a giant merged index.
 
-## Installation 
+## Installation and Usage
 
-`pip install mkdocs-multirepo`
-
-## Usage
-
-1. Create two files named `config.yml` and `index.tpl` and put them in the same directory.
-2. Configure the files as described below.
-3. Change to the directory created in step 1 and run `mkdocs-multirepo`.
+1. Install the plugin with `pip install mkdocs-multirepo`.
+2. Create a directory and put two files named `config.yml` and `index.tpl` in it.
+3. Configure the files as described below.
+4. Change to the directory created in step 1.
+5. Run `git init`.
+6. Run `mkdocs-multirepo --init`.
+7. Run `mkdocs-multirepo --build`.
 
 ## Configuration
 
