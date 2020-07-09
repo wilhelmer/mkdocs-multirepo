@@ -24,20 +24,25 @@ class DefaultHelp(click.Command):
 
 def cli(init, update, build):
 
-    if init or update:
+    config = loadConfig()
+
+    if init:
         # Initialize the repos as Git submodules
-        config = loadConfig()
+        click.echo("Adding submodules ...")
         for repo in config["repos"]:
-            if init:
-                # Add repo as git submodule
-                os.system("git submodule add " + repo["url"] + " " + repo["name"])
-            if update:
-                # Update the repos, i.e., the Git submodules
-                os.system("git submodule update")
+            # Add repo as git submodule
+            os.system("git submodule add " + repo["url"] + " " + repo["name"])
+        click.echo("Done.")
+
+    if update:
+        # Update the repos, i.e., the Git submodules
+        click.echo("Updating submodules ...")
+        os.system("git submodule update")
+        click.echo("Done.")
 
     if build:
         # Build MkDocs projects
-        config = loadConfig()
+        click.echo("Building projects ...")
         # Set defaults
         if not "target_dir" in config:
             config["target_dir"] = "site"
@@ -52,6 +57,7 @@ def cli(init, update, build):
             os.chdir("../")
 
         # Generate index.html based on template
+        click.echo("Generating landing page ...")
         soup = loadTemplate()
         # Add unordered list as child of element_id
         element = soup.find(id=config["element_id"])
@@ -61,7 +67,7 @@ def cli(init, update, build):
             list_tag = soup.new_tag("li")
             anchor_tag = soup.new_tag("a", href=repo["name"] + "/index.html")
             image_tag = soup.new_tag("img", src=repo["image"])
-            heading_tag = soup.new_tag("h3")
+            heading_tag = soup.new_tag("span")
             heading_tag.string = repo["title"]
 
             anchor_tag.insert(1, image_tag)
@@ -70,11 +76,12 @@ def cli(init, update, build):
             list_tag.insert(1, anchor_tag)
 
             element.ul.insert(1, list_tag)
-    
+
         # Write index.html
         with open(config["target_dir"] + "/index.html", "w", encoding="utf8") as htmlfile:
             htmlfile.write(str(soup))
             htmlfile.close()
+        click.echo("Done.")
 
 def loadConfig():
     configfile = open(r'config.yml')
