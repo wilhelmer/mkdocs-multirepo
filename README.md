@@ -63,6 +63,8 @@ repos:
     url: https://github.com/hristo-mavrodiev/mkdocs-sample.git
 element_id: multirepo
 target_dir: site
+extra_files:
+    - styles.css
 ```
 
 Each entry under `repos` configures an MkDocs project:
@@ -74,6 +76,7 @@ Each entry under `repos` configures an MkDocs project:
 
 `element_id`: ID of the DOM element on the landing page where the links to the projects should be created. Default: `multirepo`.
 `target_dir`: Output directory. Default: `site`.
+`extra_files`: Additional files to be placed in the output directory.
 
 ### index.tpl
 

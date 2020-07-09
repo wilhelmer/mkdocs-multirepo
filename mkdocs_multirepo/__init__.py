@@ -42,19 +42,27 @@ def cli(init, update, build):
 
     if build:
         # Build MkDocs projects
-        click.echo("Building projects ...")
         # Set defaults
         if not "target_dir" in config:
             config["target_dir"] = "site"
         if not "element_id" in config:
             config["element_id"] = "multirepo"
+
         # Copy image files and build projects
+        click.echo("Building projects ...")
         for repo in config["repos"]:
             os.makedirs(os.path.dirname(config["target_dir"] + "/" + repo["image"]), exist_ok=True)
             copy2(repo["image"], config["target_dir"] + "/" + repo["image"])
             os.chdir(os.getcwd() + os.path.sep + repo["name"])
             os.system("mkdocs build --site-dir ../" + config["target_dir"] + "/" + repo["name"])
             os.chdir("../")
+
+        # Copy extra files
+        if "extra_files" in config:
+            click.echo("Copying extra files ...")
+            for extrafile in config["extra_files"]:
+                os.makedirs(os.path.dirname(config["target_dir"] + "/" + extrafile), exist_ok=True)
+                copy2(extrafile, config["target_dir"] + "/" + extrafile)
 
         # Generate index.html based on template
         click.echo("Generating landing page ...")

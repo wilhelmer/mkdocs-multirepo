@@ -9,3 +9,5 @@ repos:
     url: https://github.com/hristo-mavrodiev/mkdocs-sample.git
 element_id: multirepo
 target_dir: site
+extra_files:
+  - styles.css
