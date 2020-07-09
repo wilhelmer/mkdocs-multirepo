@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "mkdocs-multirepo"
-version = "0.2.1"
+version = "0.3"
 description = ""
 authors = ["Lars Wilhelmer"]
 license = "MIT"
@@ -9,10 +9,11 @@ license = "MIT"
 python = "^3.7"
 pyyaml = "^5.3"
 beautifulsoup4 = "^4.9"
+click = "^7.1"
 
 [build-system]
 requires = ["poetry>=0.12"]
 build-backend = "poetry.masonry.api"
 
 [tool.poetry.scripts]
-mkdocs-multirepo = 'mkdocs_multirepo:main'
+mkdocs-multirepo = 'mkdocs_multirepo:cli'
