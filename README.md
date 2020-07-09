@@ -27,7 +27,7 @@ This has the following advantages:
 3. Configure the files as described below.
 4. Change to the directory created in step 1.
 5. Run `git init`.
-6. Run `mkdocs-multirepo --init`
+6. Run `mkdocs-multirepo --init`.
 
 ## Usage
 
