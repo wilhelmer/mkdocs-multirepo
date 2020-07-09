@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "mkdocs-multirepo"
-version = "0.3.1"
+version = "0.4.0"
 description = ""
 authors = ["Lars Wilhelmer"]
 license = "MIT"
