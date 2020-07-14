@@ -4,15 +4,15 @@
 
 A bit like [monorepo](https://github.com/spotify/mkdocs-monorepo-plugin), but keeps MkDocs projects separate.
 
-> **Note: This plugin is in beta.** 
+> **Note: This tool is in beta.** 
 
 ## Use Case
 
-This plugin allows you to build multiple MkDocs documentation projects and generate a landing page for them.
+This CLI tool allows you to build multiple MkDocs documentation projects and generate a landing page for them.
 
 Unlike [monorepo](https://github.com/spotify/mkdocs-monorepo-plugin), multirepo doesn't merge projects into one. 
 
-Instead, multirepo adds the MkDocs projects as Git submodules, builds them individually, and generates a landing page based on a template file.
+Instead, multirepo adds the MkDocs projects as Git submodules, builds them individually, and generates an HTML landing page based on a template file.
 
 This has the following advantages:
 
@@ -22,7 +22,7 @@ This has the following advantages:
 
 ## Installation
 
-1. Install the plugin with `pip install mkdocs-multirepo`.
+1. Install via `pip install mkdocs-multirepo`.
 2. Create a directory and put two files named `config.yml` and `index.tpl` in it.
 3. Configure the files as described below.
 4. Change to the directory created in step 1.
