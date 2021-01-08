@@ -8,13 +8,15 @@ A bit like [monorepo](https://github.com/spotify/mkdocs-monorepo-plugin), but ke
 
 ## Use Case
 
-This CLI tool allows you to build multiple MkDocs documentation projects and generate a landing page for them.
+This CLI tool allows you to build multiple MkDocs documentation projects and generate a landing page for them, like this:
+
+![Landing Page Example](demo.png)
 
 Unlike [monorepo](https://github.com/spotify/mkdocs-monorepo-plugin), multirepo doesn't merge projects into one. 
 
 Instead, multirepo adds the MkDocs projects as Git submodules, builds them individually, and generates an HTML landing page based on a template file.
 
-This has the following advantages:
+This has a number of advantages, for example:
 
 - Keeps the individual mkdocs.yml settings of each project. This means that, e.g., each project can have its own color set or theme.
 - Avoids problems with relative paths in the projects.
