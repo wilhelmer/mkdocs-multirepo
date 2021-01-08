@@ -1,3 +1,7 @@
+# 1. Install poetry from python-poetry.org
+# 2. poetry build
+# 3. poetry publish
+
 [tool.poetry]
 name = "mkdocs-multirepo"
 version = "0.4.2"
