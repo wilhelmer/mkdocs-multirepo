@@ -8,7 +8,7 @@ A bit like [monorepo](https://github.com/spotify/mkdocs-monorepo-plugin), but ke
 
 ## Use Case
 
-This CLI tool allows you to build multiple MkDocs documentation projects and generate a landing page for them, like this:
+This CLI tool allows you to build multiple MkDocs documentation projects and generate a landing page for them:
 
 ![Landing Page Example](demo.png)
 
@@ -47,7 +47,9 @@ Options:
 
 ### Sample Project
 
-See `mkdocs_multirepo/demo` for a sample project.
+See `mkdocs_multirepo/demo` for a sample project. 
+
+> **Note:** Search is not functional. You must implement it yourself, e.g., using [Docsearch](https://docsearch.algolia.com/).
 
 ### config.yml
 
