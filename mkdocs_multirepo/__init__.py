@@ -82,8 +82,11 @@ def cli(init, update, build):
         element.insert(1, soup.new_tag("ul"))
         for repo in config["repos"]:
             # Add a list item for each repo
+            index_html = "index.html"
+            if "index_html" in repo:
+                index_html = repo["index_html"]
             list_tag = soup.new_tag("li")
-            anchor_tag = soup.new_tag("a", href=repo["name"] + "/index.html")
+            anchor_tag = soup.new_tag("a", href=repo["name"] + "/" + index_html)
             image_tag = soup.new_tag("img", src=repo["image"])
             heading_tag = soup.new_tag("span")
             heading_tag.string = repo["title"]
