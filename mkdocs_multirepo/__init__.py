@@ -83,8 +83,10 @@ def cli(init, update, build):
         for repo in config["repos"]:
             # Add a list item for each repo
             index_html = "index.html"
+
             if "index_html" in repo:
                 index_html = repo["index_html"]
+
             list_tag = soup.new_tag("li")
             anchor_tag = soup.new_tag("a", href=repo["name"] + "/" + index_html)
             image_tag = soup.new_tag("img", src=repo["image"])
@@ -93,8 +95,12 @@ def cli(init, update, build):
 
             anchor_tag.insert(1, image_tag)
             anchor_tag.insert(1, heading_tag)
-
             list_tag.insert(1, anchor_tag)
+
+            if "pdf" in repo:
+                a_tag = soup.new_tag("a", href=repo["name"] + "/" + repo["pdf"])
+                a_tag.string = 'pdf'
+                list_tag.insert(1, a_tag)
 
             element.ul.insert(1, list_tag)
 

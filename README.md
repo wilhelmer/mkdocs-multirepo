@@ -85,6 +85,7 @@ Each entry under `repos` configures an MkDocs project:
 - 'branch': Branch of the repository. Default: empty (which is `master` for most of the repositories).
 - 'mkdocs_dir': Directory (within repo) where the mkdocs directory structure is located. Default: '.'.
 - 'index_html': Index html file for this repository. Default: 'index.html'.
+- 'pdf': Link to pdf file. 
 
 `element_id`: ID of the DOM element on the landing page where the links to the projects should be created. Default: `multirepo`.
 
