@@ -79,10 +79,17 @@ def cli(init, update, build):
         soup = loadTemplate(config["index_tpl"])
         # Add unordered list as child of element_id
         element = soup.find(id=config["element_id"])
-        element.insert(1, soup.new_tag("ul"))
+        if element.ul is None:
+            element.insert(1, soup.new_tag("ul"))
         for repo in config["repos"]:
             # Add a list item for each repo
             index_html = "index.html"
+
+            repo_element = element
+            if "element_id" in repo:
+                repo_element = soup.find(id=repo["element_id"])
+                if repo_element.ul is None:
+                    repo_element.insert(1, soup.new_tag("ul"))
 
             if "index_html" in repo:
                 index_html = repo["index_html"]
@@ -102,7 +109,7 @@ def cli(init, update, build):
                 a_tag.string = 'pdf'
                 list_tag.insert(1, a_tag)
 
-            element.ul.insert(1, list_tag)
+            repo_element.ul.insert(1, list_tag)
 
         # Write index.html
         with open(config["target_dir"] + "/index.html", "w", encoding="utf8") as htmlfile:
