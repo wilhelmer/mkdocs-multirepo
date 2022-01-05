@@ -91,6 +91,8 @@ Each entry under `repos` configures an MkDocs project:
 
 `extra_files`: Additional files to be placed in the output directory.
 
+`index`: Path to index template. Default: `index.tpl`
+
 ### index.tpl
 
 Use the `index.tpl` file to configure the landing page. Example:

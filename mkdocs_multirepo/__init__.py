@@ -32,20 +32,20 @@ def cli(init, update, build):
         cwd = os.path.abspath(os.getcwd())
         for repo in config["repos"]:
             # Add repo as git submodule
-            repo_branch = repo["branch"]
-            repo_dir = os.path.abspath(config["repos_dir"] + os.pathsep + repo["name"])
-            os.system("git submodule add " + repo["url"] + " " + repo_dir)
-            if repo_branch is not None:
-                click.echo("Using branch " + repo_branch + "in repository " + repo_dir)
-                os.chdir(repo_dir)
-                os.system("git checkout " + repo_branch)
-                os.chdir(cwd)
+            repo_dir = os.path.abspath(config["repos_dir"] + os.path.sep + repo["name"])
+            os.system("git -c http.sslVerify=false submodule add " + repo["url"] + " " + repo_dir)
+            if "branch" in repo:
+              repo_branch = repo["branch"]
+              click.echo("Using branch " + repo_branch + " in repository " + repo_dir)
+              os.chdir(repo_dir)
+              os.system("git checkout " + repo_branch)
+              os.chdir(cwd)
         click.echo("Done.")
 
     if update:
         # Update the repos, i.e., the Git submodules
         click.echo("Updating submodules ...")
-        os.system("git submodule update")
+        os.system("git -c http.sslVerify=false submodule update")
         click.echo("Done.")
 
     if build:
@@ -54,7 +54,7 @@ def cli(init, update, build):
         click.echo("Building projects ...")
         cwd = os.path.abspath(os.getcwd())
         for repo in config["repos"]:
-            repo_dir = os.path.abspath(config["repos_dir"] + os.pathsep + repo["name"])
+            repo_dir = os.path.abspath(config["repos_dir"] + os.path.sep + repo["name"])
             if not "mkdocs_dir" in repo:
                 repo["mkdocs_dir"] = "."
 
@@ -63,7 +63,7 @@ def cli(init, update, build):
             copy2(repo["image"], repo_target_image)
 
             repo_site_dir = os.path.abspath(config["target_dir"] + os.path.sep + repo["name"])
-            os.chdir(repo_dir + os.pathsep + repo["mkdocs_dir"])
+            os.chdir(repo_dir + os.path.sep + repo["mkdocs_dir"])
             os.system("mkdocs build --site-dir " + repo_site_dir)
             os.chdir(cwd)
 
@@ -76,7 +76,7 @@ def cli(init, update, build):
 
         # Generate index.html based on template
         click.echo("Generating landing page ...")
-        soup = loadTemplate()
+        soup = loadTemplate(config["index"])
         # Add unordered list as child of element_id
         element = soup.find(id=config["element_id"])
         element.insert(1, soup.new_tag("ul"))
@@ -111,13 +111,16 @@ def loadConfig():
         if not "target_dir" in config:
             config["target_dir"] = "site"
         if not "element_id" in config:
-            config["element_id"] = "multirepo"            
+            config["element_id"] = "multirepo" 
+        if not "index" in config:
+            config["index"] = "index.tpl" 
+
     finally:
         configfile.close()
     return config
 
-def loadTemplate():
-    templatefile = open(r'index.tpl')
+def loadTemplate(index_file):
+    templatefile = open(index_file)
     try:
         contents = yaml.safe_load(templatefile)
         soup = BeautifulSoup(contents, 'html.parser')
