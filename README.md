@@ -67,9 +67,11 @@ repos:
     image: images/icon-repo-2.png
     url: https://github.com/hristo-mavrodiev/mkdocs-sample.git
     branch: testing
+    index_html: 01_index.html
 element_id: multirepo
 target_dir: site
 repos_dir: repositories
+index_tpl: index.tpl
 extra_files:
     - styles.css
 ```
@@ -92,7 +94,7 @@ Each entry under `repos` configures an MkDocs project:
 
 `extra_files`: Additional files to be placed in the output directory.
 
-`index`: Path to index template. Default: `index.tpl`
+`index_tpl`: Path to index template. Default: `index.tpl`
 
 ### index.tpl
 
@@ -126,7 +128,7 @@ Sample output:
         <section id="multirepo">
             <ul>
                 <li><a href="repo-1/index.html"><img src="images/icon-repo-1.png" /><span>My Repository 1</span></a></li>
-                <li><a href="repo-2/index.html"><img src="images/icon-repo-2.png" /><span>My Repository 2</span></a></li>
+                <li><a href="repo-2/01_index.html"><img src="images/icon-repo-2.png" /><span>My Repository 2</span></a></li>
             </ul>
         </section>
     </body>

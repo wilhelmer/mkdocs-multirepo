@@ -76,7 +76,7 @@ def cli(init, update, build):
 
         # Generate index.html based on template
         click.echo("Generating landing page ...")
-        soup = loadTemplate(config["index"])
+        soup = loadTemplate(config["index_tpl"])
         # Add unordered list as child of element_id
         element = soup.find(id=config["element_id"])
         element.insert(1, soup.new_tag("ul"))
@@ -115,8 +115,8 @@ def loadConfig():
             config["target_dir"] = "site"
         if not "element_id" in config:
             config["element_id"] = "multirepo" 
-        if not "index" in config:
-            config["index"] = "index.tpl" 
+        if not "index_tpl" in config:
+            config["index_tpl"] = "index.tpl" 
 
     finally:
         configfile.close()
