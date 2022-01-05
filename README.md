@@ -61,12 +61,15 @@ repos:
     title: My Repository 1
     image: images/icon-repo-1.png
     url: https://github.com/giansalex/mkdocs-sample.git
+    mkdocs_dir: '.'
   - name: repo-2
     title: My Repository 2
     image: images/icon-repo-2.png
     url: https://github.com/hristo-mavrodiev/mkdocs-sample.git
+    branch: testing
 element_id: multirepo
 target_dir: site
+repos_dir: repositories
 extra_files:
     - styles.css
 ```
@@ -77,10 +80,14 @@ Each entry under `repos` configures an MkDocs project:
 - `title`: Text for the landing page list item.
 - `image`: Image for the landing page list item.
 - `url`: URL of the repository.
+- 'branch': Branch of the repository. Default: empty (which is `master` for most of the repositories).
+- 'mkdocs_dir': Directory (within repo) where the mkdocs directory structure is located. Default: '.'.
 
 `element_id`: ID of the DOM element on the landing page where the links to the projects should be created. Default: `multirepo`.
 
 `target_dir`: Output directory. Default: `site`.
+
+`repos_dir`: Target directory for repositories (submodules). Default: `repositories`.
 
 `extra_files`: Additional files to be placed in the output directory.
 

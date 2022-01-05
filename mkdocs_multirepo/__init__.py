@@ -29,9 +29,17 @@ def cli(init, update, build):
     if init:
         # Initialize the repos as Git submodules
         click.echo("Adding submodules ...")
+        cwd = os.path.abspath(os.getcwd())
         for repo in config["repos"]:
             # Add repo as git submodule
-            os.system("git submodule add " + repo["url"] + " " + repo["name"])
+            repo_branch = repo["branch"]
+            repo_dir = os.path.abspath(config["repos_dir"] + os.pathsep + repo["name"])
+            os.system("git submodule add " + repo["url"] + " " + repo_dir)
+            if repo_branch is not None:
+                click.echo("Using branch " + repo_branch + "in repository " + repo_dir)
+                os.chdir(repo_dir)
+                os.system("git checkout " + repo_branch)
+                os.chdir(cwd)
         click.echo("Done.")
 
     if update:
@@ -42,27 +50,29 @@ def cli(init, update, build):
 
     if build:
         # Build MkDocs projects
-        # Set defaults
-        if not "target_dir" in config:
-            config["target_dir"] = "site"
-        if not "element_id" in config:
-            config["element_id"] = "multirepo"
-
         # Copy image files and build projects
         click.echo("Building projects ...")
+        cwd = os.path.abspath(os.getcwd())
         for repo in config["repos"]:
-            os.makedirs(os.path.dirname(config["target_dir"] + "/" + repo["image"]), exist_ok=True)
-            copy2(repo["image"], config["target_dir"] + "/" + repo["image"])
-            os.chdir(os.getcwd() + os.path.sep + repo["name"])
-            os.system("mkdocs build --site-dir ../" + config["target_dir"] + "/" + repo["name"])
-            os.chdir("../")
+            repo_dir = os.path.abspath(config["repos_dir"] + os.pathsep + repo["name"])
+            if not "mkdocs_dir" in repo:
+                repo["mkdocs_dir"] = "."
+
+            repo_target_image = os.path.abspath(config["target_dir"] + os.path.sep + repo["image"])
+            os.makedirs(os.path.dirname(repo_target_image), exist_ok=True)
+            copy2(repo["image"], repo_target_image)
+
+            repo_site_dir = os.path.abspath(config["target_dir"] + os.path.sep + repo["name"])
+            os.chdir(repo_dir + os.pathsep + repo["mkdocs_dir"])
+            os.system("mkdocs build --site-dir " + repo_site_dir)
+            os.chdir(cwd)
 
         # Copy extra files
         if "extra_files" in config:
             click.echo("Copying extra files ...")
             for extrafile in config["extra_files"]:
-                os.makedirs(os.path.dirname(config["target_dir"] + "/" + extrafile), exist_ok=True)
-                copy2(extrafile, config["target_dir"] + "/" + extrafile)
+                os.makedirs(os.path.dirname(config["target_dir"] + os.path.sep + extrafile), exist_ok=True)
+                copy2(extrafile, config["target_dir"] + os.path.sep + extrafile)
 
         # Generate index.html based on template
         click.echo("Generating landing page ...")
@@ -95,6 +105,13 @@ def loadConfig():
     configfile = open(r'config.yml')
     try:
         config = yaml.safe_load(configfile)
+        # Set defaults
+        if not "repos_dir" in config:
+            config["repos_dir"] = os.getcwd()
+        if not "target_dir" in config:
+            config["target_dir"] = "site"
+        if not "element_id" in config:
+            config["element_id"] = "multirepo"            
     finally:
         configfile.close()
     return config
