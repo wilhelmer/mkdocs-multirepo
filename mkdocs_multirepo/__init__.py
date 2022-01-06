@@ -67,7 +67,7 @@ def cli(init, update, build):
 
             repo_site_dir = os.path.abspath(config["target_dir"] + os.path.sep + repo["name"])
             os.chdir(repo_dir + os.path.sep + repo["mkdocs_dir"])
-            os.system("mkdocs build --config " + repo["mkdocs_config"] + " --site-dir " + repo_site_dir)
+            os.system("mkdocs build --config-file " + repo["mkdocs_config"] + " --site-dir " + repo_site_dir)
             os.chdir(cwd)
 
         # Copy extra files
