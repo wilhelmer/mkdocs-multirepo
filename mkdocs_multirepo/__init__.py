@@ -57,6 +57,9 @@ def cli(init, update, build):
             repo_dir = os.path.abspath(config["repos_dir"] + os.path.sep + repo["name"])
             if not "mkdocs_dir" in repo:
                 repo["mkdocs_dir"] = "."
+            if not "mkdocs_config" in repo:
+                repo["mkdocs_config"] = "mkdocs.yml"
+            
 
             repo_target_image = os.path.abspath(config["target_dir"] + os.path.sep + repo["image"])
             os.makedirs(os.path.dirname(repo_target_image), exist_ok=True)
@@ -64,7 +67,7 @@ def cli(init, update, build):
 
             repo_site_dir = os.path.abspath(config["target_dir"] + os.path.sep + repo["name"])
             os.chdir(repo_dir + os.path.sep + repo["mkdocs_dir"])
-            os.system("mkdocs build --site-dir " + repo_site_dir)
+            os.system("mkdocs build --config " + repo["mkdocs_config"] + " --site-dir " + repo_site_dir)
             os.chdir(cwd)
 
         # Copy extra files
