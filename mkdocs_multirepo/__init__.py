@@ -29,61 +29,90 @@ def cli(init, update, build):
     if init:
         # Initialize the repos as Git submodules
         click.echo("Adding submodules ...")
+        cwd = os.path.abspath(os.getcwd())
         for repo in config["repos"]:
             # Add repo as git submodule
-            os.system("git submodule add " + repo["url"] + " " + repo["name"])
+            repo_dir = os.path.abspath(config["repos_dir"] + os.path.sep + repo["name"])
+            os.system("git -c http.sslVerify=false submodule add " + repo["url"] + " " + repo_dir)
+            if "branch" in repo:
+              repo_branch = repo["branch"]
+              click.echo("Using branch " + repo_branch + " in repository " + repo_dir)
+              os.chdir(repo_dir)
+              os.system("git checkout " + repo_branch)
+              os.chdir(cwd)
         click.echo("Done.")
 
     if update:
         # Update the repos, i.e., the Git submodules
         click.echo("Updating submodules ...")
-        os.system("git submodule update")
+        os.system("git -c http.sslVerify=false submodule update")
         click.echo("Done.")
 
     if build:
         # Build MkDocs projects
-        # Set defaults
-        if not "target_dir" in config:
-            config["target_dir"] = "site"
-        if not "element_id" in config:
-            config["element_id"] = "multirepo"
-
         # Copy image files and build projects
         click.echo("Building projects ...")
+        cwd = os.path.abspath(os.getcwd())
         for repo in config["repos"]:
-            os.makedirs(os.path.dirname(config["target_dir"] + "/" + repo["image"]), exist_ok=True)
-            copy2(repo["image"], config["target_dir"] + "/" + repo["image"])
-            os.chdir(os.getcwd() + os.path.sep + repo["name"])
-            os.system("mkdocs build --site-dir ../" + config["target_dir"] + "/" + repo["name"])
-            os.chdir("../")
+            repo_dir = os.path.abspath(config["repos_dir"] + os.path.sep + repo["name"])
+            if not "mkdocs_dir" in repo:
+                repo["mkdocs_dir"] = "."
+            if not "mkdocs_config" in repo:
+                repo["mkdocs_config"] = "mkdocs.yml"
+            
+
+            repo_target_image = os.path.abspath(config["target_dir"] + os.path.sep + repo["image"])
+            os.makedirs(os.path.dirname(repo_target_image), exist_ok=True)
+            copy2(repo["image"], repo_target_image)
+
+            repo_site_dir = os.path.abspath(config["target_dir"] + os.path.sep + repo["name"])
+            os.chdir(repo_dir + os.path.sep + repo["mkdocs_dir"])
+            os.system("mkdocs build --config-file " + repo["mkdocs_config"] + " --site-dir " + repo_site_dir)
+            os.chdir(cwd)
 
         # Copy extra files
         if "extra_files" in config:
             click.echo("Copying extra files ...")
             for extrafile in config["extra_files"]:
-                os.makedirs(os.path.dirname(config["target_dir"] + "/" + extrafile), exist_ok=True)
-                copy2(extrafile, config["target_dir"] + "/" + extrafile)
+                os.makedirs(os.path.dirname(config["target_dir"] + os.path.sep + extrafile), exist_ok=True)
+                copy2(extrafile, config["target_dir"] + os.path.sep + extrafile)
 
         # Generate index.html based on template
         click.echo("Generating landing page ...")
-        soup = loadTemplate()
+        soup = loadTemplate(config["index_tpl"])
         # Add unordered list as child of element_id
         element = soup.find(id=config["element_id"])
-        element.insert(1, soup.new_tag("ul"))
+        if element.ul is None:
+            element.insert(1, soup.new_tag("ul"))
         for repo in config["repos"]:
             # Add a list item for each repo
+            index_html = "index.html"
+
+            repo_element = element
+            if "element_id" in repo:
+                repo_element = soup.find(id=repo["element_id"])
+                if repo_element.ul is None:
+                    repo_element.insert(1, soup.new_tag("ul"))
+
+            if "index_html" in repo:
+                index_html = repo["index_html"]
+
             list_tag = soup.new_tag("li")
-            anchor_tag = soup.new_tag("a", href=repo["name"] + "/index.html")
+            anchor_tag = soup.new_tag("a", href=repo["name"] + "/" + index_html)
             image_tag = soup.new_tag("img", src=repo["image"])
             heading_tag = soup.new_tag("span")
             heading_tag.string = repo["title"]
 
             anchor_tag.insert(1, image_tag)
             anchor_tag.insert(1, heading_tag)
-
             list_tag.insert(1, anchor_tag)
 
-            element.ul.insert(1, list_tag)
+            if "pdf" in repo:
+                a_tag = soup.new_tag("a", href=repo["name"] + "/" + repo["pdf"])
+                a_tag.string = 'pdf'
+                list_tag.insert(1, a_tag)
+
+            repo_element.ul.insert(1, list_tag)
 
         # Write index.html
         with open(config["target_dir"] + "/index.html", "w", encoding="utf8") as htmlfile:
@@ -95,12 +124,22 @@ def loadConfig():
     configfile = open(r'config.yml')
     try:
         config = yaml.safe_load(configfile)
+        # Set defaults
+        if not "repos_dir" in config:
+            config["repos_dir"] = os.getcwd()
+        if not "target_dir" in config:
+            config["target_dir"] = "site"
+        if not "element_id" in config:
+            config["element_id"] = "multirepo" 
+        if not "index_tpl" in config:
+            config["index_tpl"] = "index.tpl" 
+
     finally:
         configfile.close()
     return config
 
-def loadTemplate():
-    templatefile = open(r'index.tpl')
+def loadTemplate(index_file):
+    templatefile = open(index_file)
     try:
         contents = yaml.safe_load(templatefile)
         soup = BeautifulSoup(contents, 'html.parser')

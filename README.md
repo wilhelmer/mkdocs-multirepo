@@ -61,12 +61,17 @@ repos:
     title: My Repository 1
     image: images/icon-repo-1.png
     url: https://github.com/giansalex/mkdocs-sample.git
+    mkdocs_dir: '.'
   - name: repo-2
     title: My Repository 2
     image: images/icon-repo-2.png
     url: https://github.com/hristo-mavrodiev/mkdocs-sample.git
+    branch: testing
+    index_html: 01_index.html
 element_id: multirepo
 target_dir: site
+repos_dir: repositories
+index_tpl: index.tpl
 extra_files:
     - styles.css
 ```
@@ -77,12 +82,22 @@ Each entry under `repos` configures an MkDocs project:
 - `title`: Text for the landing page list item.
 - `image`: Image for the landing page list item.
 - `url`: URL of the repository.
+- 'branch': Branch of the repository. Default: empty (which is `master` for most of the repositories).
+- 'mkdocs_dir': Directory (within repo) where the mkdocs directory structure is located. Default: '.'.
+- 'mkdocs_config': Mkdocs config file used during `mkdocs build`. Default: 'mkdocs.yml'.
+- 'index_html': Index html file for this repository. Default: 'index.html'.
+- 'pdf': Link to pdf file.
+- 'element_id': ID of the DOM element on the landing page where the links to the this repo project should be created. Default: from config.
 
 `element_id`: ID of the DOM element on the landing page where the links to the projects should be created. Default: `multirepo`.
 
 `target_dir`: Output directory. Default: `site`.
 
+`repos_dir`: Target directory for repositories (submodules). Default: `repositories`.
+
 `extra_files`: Additional files to be placed in the output directory.
+
+`index_tpl`: Path to index template. Default: `index.tpl`
 
 ### index.tpl
 
@@ -116,7 +131,7 @@ Sample output:
         <section id="multirepo">
             <ul>
                 <li><a href="repo-1/index.html"><img src="images/icon-repo-1.png" /><span>My Repository 1</span></a></li>
-                <li><a href="repo-2/index.html"><img src="images/icon-repo-2.png" /><span>My Repository 2</span></a></li>
+                <li><a href="repo-2/01_index.html"><img src="images/icon-repo-2.png" /><span>My Repository 2</span></a></li>
             </ul>
         </section>
     </body>
