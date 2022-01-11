@@ -79,16 +79,16 @@ extra_files:
 
 Each entry under `repos` configures an MkDocs project:
 
-- `name`: Used to create the Git Submodule directory and also the output directory within `target_dir`.
+- `name`: Used to create the Git submodule directory and also the output directory within `target_dir`.
 - `title`: Text for the landing page list item.
 - `image`: Image for the landing page list item.
 - `url`: URL of the repository.
-- `branch`: Branch of the repository. Default: empty (which is `master` for most of the repositories).
-- `mkdocs_dir`: Directory (within repo) where the mkdocs directory structure is located. Default: `.`.
-- `mkdocs_config`: Mkdocs config file used during `mkdocs build`. Default: `mkdocs.yml`.
-- `index_html`: Index html file for this repository. Default: `index.html`.
-- `pdf`: Link to pdf file.
-- `element_id`: ID of the DOM element on the landing page where the links to the this repo project should be created. Default: from config.
+- `branch`: Branch of the repository. Default: empty (which is `master` for most repositories).
+- `mkdocs_dir`: Directory (within repo) where the MkDocs directory structure is located. Default: `.`.
+- `mkdocs_config`: MkDocs config file used during `mkdocs build`. Default: `mkdocs.yml`.
+- `index_html`: Index HTML file for this repository. Default: `index.html`.
+- `pdf`: Link to a PDF file within the repository, if desired.
+- `element_id`: ID of the DOM element on the landing page where the links to this repo project should be created. Default: use general setting (see below).
 
 Additionally, the following general settings are available:
 
@@ -96,7 +96,7 @@ Additionally, the following general settings are available:
 - `target_dir`: Output directory. Default: `site`.
 - `repos_dir`: Target directory for repositories (submodules). Default: `repositories`.
 - `extra_files`: Additional files to be placed in the output directory.
-- `index_tpl`: Path to index template. Default: `index.tpl`.
+- `index_tpl`: Path to the landing page template (see below). Default: `index.tpl`.
 
 ### index.tpl
 
